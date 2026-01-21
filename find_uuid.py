@@ -2,7 +2,7 @@ import asyncio
 from bleak import BleakClient
 
 # REPLACE THIS WITH YOUR HUB'S ADDRESS
-HUB_ADDRESS = "XX:XX:XX:XX:XX:XX" 
+HUB_ADDRESS = "8D7D0D4B-444C-B348-4F5D-2F5D560FEB23" 
 
 async def main():
     print(f"Connecting to {HUB_ADDRESS}...")

@@ -12,4 +12,6 @@ async def run():
             # Print everything just in case
             print(f"Device: {d.name} - {d.address}")
 
+    
+
 asyncio.run(run())
