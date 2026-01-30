@@ -1,0 +1,15 @@
+{
+  "device_name": "YX-01EB2C",
+  "profiles": {
+    "A": { "cwSpeed": 12288, "ccwSpeed": 10240 },
+    "B": { "cwSpeed": 12288, "ccwSpeed": 10240 },
+    "C": { "cwSpeed": 0, "ccwSpeed": 0 },
+    "D": { "cwSpeed": 0, "ccwSpeed": 0 }
+  },
+  "sequence": [
+    { "dir": "FORWARD",  "seconds": 3.0, "A_delay": 2.0, "B_delay": 2.0 },
+    { "dir": "LEFT",     "seconds": 1.5, "A_delay": 2.0, "B_delay": 2.0 },
+    { "dir": "RIGHT",    "seconds": 1.5, "A_delay": 2.0, "B_delay": 2.0 },
+    { "dir": "BACKWARD", "seconds": 2.0, "A_delay": 2.0, "B_delay": 2.0 }
+  ]
+}

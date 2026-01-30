@@ -1,37 +1,30 @@
-# Mould King Hexapod Control
+# MKH4.0 (Mould King) — Python BLE Controller (2-DOF Platform)
 
-This project enables PC-based control of a LEGO/Mould King Stewart Platform (Hexapod) using Python. 
+This repository provides a Python-based Bluetooth Low Energy (BLE) controller for the Mould King MKH4.0 hub, designed to run repeatable two-motor motion sequences from a PC. Motor behavior is defined externally in `config.json`, including per-motor CW/CCW speeds, step durations, and optional start delays so motors don’t have to begin at the same time. The code is organized so `controller.py` handles BLE connection and command framing, while `test_run.py` focuses on high-level movement logic (FORWARD/BACKWARD/LEFT/RIGHT) and safe start/stop sequencing, making it easy to tune motion without changing the protocol layer.
 
-Unlike standard LEGO Control+ hubs, the Mould King hubs are "dumb" receivers. Therefore, all **Inverse Kinematics (math)** and **Control Logic** run on the PC, which streams raw motor commands to the hub via Bluetooth Low Energy (BLE).
+This project controls a **Mould King MKH4.0** Bluetooth hub from a **computer using Python**, with a clean separation of:
+- `controller.py` (BLE + protocol)
+- `test_run.py` (your motion logic / sequence runner)
+- `config.json` (input file: speeds, directions, timing)
 
-## Current Project Status
-* **Mechanics:** Hexapod frame built (MOC-107567 style).
-* **Electronics:** 1x Mould King Hub (4 Ports).
-* **Software:** Python script calculating leg lengths and sending Bluetooth commands.
-* **Limitation:** We currently have **1 Hub (4 ports)** but the robot has **6 Legs**. 
-    * *Interim Solution:* We are driving 4 legs for testing (Ports A, B, C, D).
-    * *Goal:* Acquire a second hub or use Y-cables to control all 6 legs.
-
----
-
-## Hardware Requirements
-1.  **PC/Laptop** with Bluetooth support.
-2.  **Mould King Battery Hub** (Series 4.0 or 6.0).
-3.  **Mould King/LEGO Motors** connected to ports A, B, C, D.
-4.  **Python 3.7+** installed.
+It supports **4 directions using 2 motors (A & B)** and lets you set:
+- CW/CCW speeds per motor
+- Per-step duration in seconds
+- Per-step per-motor start delays (A_delay, B_delay)
 
 ---
 
-## Installation & Setup
 
-### 1. Set up the Environment
-We use a virtual environment to keep dependencies clean.
+## Requirements
+
+- Python 3.9+ recommended
+- Bluetooth enabled on your computer
+- Only **one** device can control the hub at a time: close the Mould King phone app before running.
+
+---
+
+## Install
 
 ```bash
-# Windows
-python -m venv .venv
-.venv\Scripts\activate
-
-# Mac/Linux
-python3 -m venv .venv
-source .venv/bin/activate
+cd Gamification
+pip install -r requirements.txt
