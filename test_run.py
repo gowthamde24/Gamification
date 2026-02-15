@@ -7,21 +7,25 @@ def load_config(path="config.json"):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+def get_motor_cmd(motor_cfg):
+    """Converts the JSON motor config into a MotorCmd object."""
+    # If the motor is missing from config, default to stopped.
+    if not motor_cfg:
+        return MotorCmd(speed=0, ccw=False)
+        
+    direction = motor_cfg.get("direction", "STOP")
+    speed = motor_cfg.get("speed", 0)
+
+    if direction == "CW":
+        return MotorCmd(speed=speed, ccw=False)
+    elif direction == "CCW":
+        return MotorCmd(speed=speed, ccw=True)
+    else:
+        return MotorCmd(speed=0, ccw=False)
+
 async def main():
     cfg = load_config()
-
     dev_name = cfg["device_name"]
-    prof = cfg["profiles"]
-
-    # Profiles (decimal speeds)
-    Aprof = prof["A"]
-    Bprof = prof["B"]
-
-    def A_cw():  return MotorCmd(speed=Aprof["cwSpeed"], ccw=False)
-    def A_ccw(): return MotorCmd(speed=Aprof["ccwSpeed"], ccw=True)
-    def B_cw():  return MotorCmd(speed=Bprof["cwSpeed"], ccw=False)
-    def B_ccw(): return MotorCmd(speed=Bprof["ccwSpeed"], ccw=True)
-
     ctrl = MKH4Controller(dev_name)
 
     try:
@@ -29,31 +33,32 @@ async def main():
         await ctrl.initialize()
 
         for step in cfg["sequence"]:
-            d = step["dir"]
-            t = float(step["seconds"])
+            desc = step.get("description", "Running step")
+            t = float(step["duration"])
+            motors = step.get("motors", {})
 
-            # 4-direction mapping with 2 motors:
-            # FORWARD:  A CW,  B CW
-            # BACKWARD: A CCW, B CCW
-            # LEFT:     A CCW, B CW
-            # RIGHT:    A CW,  B CCW
-            if d == "FORWARD":
-                await ctrl.set_speeds(A_cw(),  B_cw(),  MotorCmd(), MotorCmd())
-            elif d == "BACKWARD":
-                await ctrl.set_speeds(A_ccw(), B_ccw(), MotorCmd(), MotorCmd())
-            elif d == "LEFT":
-                await ctrl.set_speeds(A_ccw(), B_cw(),  MotorCmd(), MotorCmd())
-            elif d == "RIGHT":
-                await ctrl.set_speeds(A_cw(),  B_ccw(), MotorCmd(), MotorCmd())
-            else:
-                raise ValueError(f"Unknown dir: {d}")
+            # Extract commands for all 4 independent ports
+            cmd_A = get_motor_cmd(motors.get("A"))
+            cmd_B = get_motor_cmd(motors.get("B"))
+            cmd_C = get_motor_cmd(motors.get("C"))
+            cmd_D = get_motor_cmd(motors.get("D"))
 
+            print(f"--- {desc} for {t} seconds ---")
+            
+            # Send the independent commands to all 4 motors at once
+            await ctrl.set_speeds(cmd_A, cmd_B, cmd_C, cmd_D)
+
+            # Wait for the specified duration of this step
             await asyncio.sleep(t)
+            
+            # Stop all motors briefly before the next step to prevent hardware stress
             await ctrl.stop_all()
+            await asyncio.sleep(0.1) 
 
-        await ctrl.stop_all()
+        print("--- Sequence Complete ---")
 
     finally:
         await ctrl.disconnect()
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
