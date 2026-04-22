@@ -3,34 +3,35 @@
   "sequence": [
     {
       "description": "Forward",
-      "duration": 8.0,
+      "duration": 2.0,
       "motors": {
-        "A": { "direction": "CCW", "speed": 12288 },
-        "B": { "direction": "STOP", "speed": 12288 }
+        "A": { "direction": "CCW", "speed": 12288 }
+        
       }
     },
     {
       "description": "Backward",
-      "duration": 8.0,
+      "duration": 0.0,
       "motors": {
-        "A": { "direction": "CW", "speed": 12288 },
-        "B": { "direction": "STOP", "speed": 12288 }
+        "A": { "direction": "CW", "speed": 12288 }
+        
       }
     },
     {
       "description": "left",
-      "duration": 10.0,
+      "duration": 0.0,
       "motors": {
-        "A": { "direction": "STOP", "speed": 12288 },
+        
         "B": { "direction": "CCW", "speed": 12288 }
       }
     },
     {
       "description": "right",
-      "duration": 10.0,
+      "duration": 0.0,
       "motors": {
-        "A": { "direction": "STOP", "speed": 12288 },
+        
         "B": { "direction": "CW", "speed": 12288 }
+        
       }
     }
     
