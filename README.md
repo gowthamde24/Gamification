@@ -1,6 +1,6 @@
 # Gamification
 
-Python-based Bluetooth Low Energy (BLE) control for the **Mould King MKH4.0** hub. This project connects to the hub from a computer, performs the required initialization handshake, and runs motor sequences defined in `config.json` using the `bleak` BLE client library.[web:267][web:276]
+Python-based Bluetooth Low Energy (BLE) control for the **Mould King MKH4.0** hub. This project connects to the hub from a computer, performs the required initialization handshake, and runs motor sequences defined in `config.json` using the `bleak` BLE client library.
 
 ## Overview
 
@@ -25,7 +25,7 @@ Gamification/
 
 ## Features
 
-- Connects to the MKH4.0 hub using Python and `bleak`.[web:267][web:276]
+- Connects to the MKH4.0 hub using Python and `bleak`.
 - Performs the BLE initialization handshake before motor control starts.
 - Supports motor commands for ports A, B, C, and D.
 - Loads the motion sequence from `config.json`.
@@ -38,7 +38,7 @@ Gamification/
 - Bluetooth enabled on the computer.
 - Mould King MKH4.0 hub powered on.
 - The official mobile app must be closed before running the script.
-- `bleak` installed for BLE communication.[web:267][web:276]
+- `bleak` installed for BLE communication.
 
 ## Installation
 
@@ -144,7 +144,7 @@ The motion sequence is defined in `config.json`.
 It does the following:
 
 - Finds the device by BLE name.
-- Connects using `BleakClient`.[web:267][web:276]
+- Connects using `BleakClient`.
 - Subscribes to notifications.
 - Sends the initialization commands.
 - Encodes motor speeds and directions.
@@ -204,7 +204,7 @@ Where:
 - `CCCC` = Motor C
 - `DDDD` = Motor D
 
-BLE messages are split into chunks of up to 20 bytes before sending, which matches common BLE write handling in practice.[web:273][web:276]
+BLE messages are split into chunks of up to 20 bytes before sending, which matches common BLE write handling in practice.
 
 ### `test_run.py`
 
@@ -312,4 +312,4 @@ GitHub: [https://github.com/gowthamde24/Gamification](https://github.com/gowtham
 
 ## Acknowledgment
 
-This project uses the Python `bleak` library for asynchronous, cross-platform BLE communication with GATT devices.[web:267][web:276]
+This project uses the Python `bleak` library for asynchronous, cross-platform BLE communication with GATT devices.
